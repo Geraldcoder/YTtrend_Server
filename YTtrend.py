@@ -58,7 +58,7 @@ app = FastAPI()
 # CORS setup to allow React frontend
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],  # React dev server
+    allow_origins=["https://yttrend.netlify.app/","http://localhost:5173"],  # React dev server
     allow_credentials=True,
     allow_methods=["*"],  # GET, POST, etc.
     allow_headers=["*"],  # Content-Type, etc.
