@@ -5,6 +5,7 @@ from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 from googleapiclient.discovery import build
 from datetime import datetime, timedelta, timezone
+import os
 
 # YouTube API setup
 API_KEY = os.getenv("API_KEY")
