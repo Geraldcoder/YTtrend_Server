@@ -1,46 +1,3 @@
-# Original script
-
-# from googleapiclient.discovery import build
-# from datetime import datetime, timedelta, timezone
-
-
-# API_KEY = "AIzaSyDR2k7lR165zUFshzNcElb2zG6mpDGXekA"
-# youtube = build('youtube', 'v3', developerKey=API_KEY)
-
-# keyword = input("What niche do you wish to check trending?: ")
-# since = (datetime.now(timezone.utc) - timedelta(days=2)).isoformat()
-
-# # find recent videos for the keyword, sorted by viewCount
-# search = youtube.search().list(
-#     part="id",
-#     q= keyword,
-#     type="video",
-#     regionCode="US",
-#     publishedAfter= since,
-#     order="viewCount",
-#     maxResults= 20
-# ).execute()
-
-# video_ids = [item["id"]["videoId"] for item in search["items"]]
-
-# # pull stats to compute trend "velocity"
-# videos = youtube.videos().list(
-#     part="snippet,statistics,contentDetails",
-#     id=",".join(video_ids)
-# ).execute()
-
-# def views_per_hour(item):
-#     views = int(item["statistics"].get("viewCount", 0))
-#     published = datetime.fromisoformat(item["snippet"]["publishedAt"].replace("Z","+00:00"))
-#     hours = max((datetime.now(timezone.utc) - published).total_seconds()/3600, 1/60)
-#     return views / hours
-
-
-# ranked = sorted(videos["items"], key=views_per_hour, reverse=True)
-# for v in ranked[:10]:
-#     print(f'{v["snippet"]["title"]} | {views_per_hour(v):.0f} views/hr | https://youtu.be/{v["id"]} | Total Views: {v["statistics"]["viewCount"]}')
-
-
 # fastapi code 
 
 from fastapi import FastAPI
@@ -50,7 +7,7 @@ from googleapiclient.discovery import build
 from datetime import datetime, timedelta, timezone
 
 # YouTube API setup
-API_KEY = "AIzaSyDR2k7lR165zUFshzNcElb2zG6mpDGXekA"
+API_KEY = os.getenv("API_KEY")
 youtube = build('youtube', 'v3', developerKey=API_KEY)
 
 app = FastAPI()
@@ -58,7 +15,7 @@ app = FastAPI()
 # CORS setup to allow React frontend
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://yttrend.netlify.app/","http://localhost:5173"],  # React dev server
+    allow_origins=["https://yttrend.netlify.app","http://localhost:5173"],  # React dev server
     allow_credentials=True,
     allow_methods=["*"],  # GET, POST, etc.
     allow_headers=["*"],  # Content-Type, etc.
